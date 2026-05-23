@@ -199,10 +199,18 @@ kotlin {
         binaries.framework { baseName = "Inventory"; xcf.add(this) }
     }
     iosSimulatorArm64 {
-        binaries.framework { baseName = "Inventory"; xcf.add(this) }
+        binaries.framework {
+            baseName = "Inventory"
+            isStatic = true
+            xcf.add(this)
+        }
     }
     iosX64 {
-        binaries.framework { baseName = "Inventory"; xcf.add(this) }
+        binaries.framework {
+            baseName = "Inventory"
+            isStatic = true
+            xcf.add(this)
+        }
     }
 
     tvosArm64 {
