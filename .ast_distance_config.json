@@ -1,4 +1,5 @@
 {
+  "parity_mode": false,
   "name": "inventory-kotlin",
   "source": {
     "path": "tmp/inventory/src",
