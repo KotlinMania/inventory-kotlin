@@ -1,4 +1,3 @@
-// port-lint: ignore
 // Smoke tests for the runtime-registered plugin inventory.
 package io.github.kotlinmania.inventory
 
@@ -6,12 +5,16 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-private class Flag(val short: Char, val name: String)
+private class Flag(
+    val short: Char,
+    val name: String,
+)
 
-private class Other(val tag: String)
+private class Other(
+    val tag: String,
+)
 
 class InventoryTest {
-
     @Test
     fun submitAndIterateRoundTrip() {
         collect(Flag::class)
