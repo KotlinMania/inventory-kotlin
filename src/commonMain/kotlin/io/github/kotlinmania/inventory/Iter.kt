@@ -20,30 +20,32 @@ package io.github.kotlinmania.inventory
  * Refer to the package-level documentation for a complete example of
  * instantiating a plugin registry and submitting plugins.
  */
-public class Iter<T : Any> @PublishedApi internal constructor(
-    private var node: Node?,
-    @PublishedApi internal val extract: (Any) -> T,
-) : Iterator<T> {
+public class Iter<T : Any>
+    @PublishedApi
+    internal constructor(
+        private var node: Node?,
+        @PublishedApi
+        internal val extract: (Any) -> T,
+    ) : Iterator<T> {
+        override fun hasNext(): Boolean = node != null
 
-    override fun hasNext(): Boolean = node != null
-
-    override fun next(): T {
-        val current = node ?: throw NoSuchElementException()
-        node = current.next.load()
-        val payload = current.value
-        if (payload !is CollectNode) {
-            throw IllegalStateException("inventory: corrupt node")
+        override fun next(): T {
+            val current = node ?: throw NoSuchElementException()
+            node = current.next.load()
+            val payload = current.value
+            if (payload !is CollectNode) {
+                throw IllegalStateException("inventory: corrupt node")
+            }
+            return extract(payload.unwrapped)
         }
-        return extract(payload.unwrapped)
-    }
 
-    /**
-     * Returns an iterator that resumes from the same position. Equivalent to
-     * `impl Clone for Iter<T>` upstream: the new iterator visits the same
-     * remaining nodes as this one, independently.
-     */
-    public fun copy(): Iter<T> = Iter(node, extract)
-}
+        /**
+         * Returns an iterator that resumes from the same position. Equivalent to
+         * `impl Clone for Iter<T>` upstream: the new iterator visits the same
+         * remaining nodes as this one, independently.
+         */
+        public fun copy(): Iter<T> = Iter(node, extract)
+    }
 
 /**
  * Returns an iterator over all plugins registered for the given type.

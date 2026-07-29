@@ -117,9 +117,7 @@ private class RegistryMap private constructor(
         return null
     }
 
-    fun put(klass: KClass<*>, registry: Registry): RegistryMap {
-        return RegistryMap(entries + (klass to registry))
-    }
+    fun put(klass: KClass<*>, registry: Registry): RegistryMap = RegistryMap(entries + (klass to registry))
 
     companion object {
         val EMPTY: RegistryMap = RegistryMap(emptyList())
