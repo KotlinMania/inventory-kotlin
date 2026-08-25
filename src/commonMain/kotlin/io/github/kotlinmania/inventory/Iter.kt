@@ -1,4 +1,4 @@
-// port-lint: source src/lib.rs
+// port-lint: source lib.rs
 package io.github.kotlinmania.inventory
 
 /**
@@ -40,9 +40,8 @@ public class Iter<T : Any>
         }
 
         /**
-         * Returns an iterator that resumes from the same position. Equivalent to
-         * `impl Clone for Iter<T>` upstream: the new iterator visits the same
-         * remaining nodes as this one, independently.
+         * Returns an iterator that resumes from the same position. The new iterator
+         * visits the same remaining nodes as this one, independently.
          */
         public fun copy(): Iter<T> = Iter(node, extract)
     }

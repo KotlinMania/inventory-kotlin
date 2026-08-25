@@ -1,4 +1,4 @@
-// port-lint: source src/lib.rs
+// port-lint: source lib.rs
 
 /**
  * **Typed distributed plugin registration.**
@@ -46,7 +46,7 @@
  * plugin type, or by any downstream module.
  *
  * ```
- * submit(Flag(short = 'v', name = "verbose"))
+ * submit(Flag(name = "verbose"))
  * ```
  *
  * Place [submit] invocations outside of any function body. All [submit]

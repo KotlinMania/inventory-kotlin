@@ -1,4 +1,4 @@
-// port-lint: source src/lib.rs
+// port-lint: source lib.rs
 package io.github.kotlinmania.inventory
 
 import kotlin.reflect.KClass
@@ -20,7 +20,7 @@ import kotlin.reflect.KClass
  * initializer:
  *
  * ```
- * private val registerVerbose = submit(Flag(short = 'v', name = "verbose"))
+ * private val registerVerbose = submit(Flag(name = "verbose"))
  * ```
  *
  * Do not invoke [submit] conditionally from inside a function body when you
