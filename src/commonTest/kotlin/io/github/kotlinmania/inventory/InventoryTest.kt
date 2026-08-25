@@ -1,8 +1,12 @@
-// Smoke tests for the runtime-registered plugin inventory.
+// port-lint: tests tests/test.rs
+// Upstream tests/test.rs (test_iter) verifies std::mem::size_of and align_of on the Rust ZST ghost type.
+// Upstream tests/compiletest.rs executes trybuild compile-fail tests against Rust macro invocations.
 package io.github.kotlinmania.inventory
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 private class Flag(
@@ -13,6 +17,12 @@ private class Flag(
 private class Other(
     val tag: String,
 )
+
+private class UnusedPlugin(
+    val id: Int,
+)
+
+private class CopyKey
 
 class InventoryTest {
     @Test
@@ -36,6 +46,15 @@ class InventoryTest {
     }
 
     @Test
+    fun emptyRegistryIteration() {
+        val iterator = iter<UnusedPlugin>()
+        assertFalse(iterator.hasNext())
+        assertFailsWith<NoSuchElementException> {
+            iterator.next()
+        }
+    }
+
+    @Test
     fun copyResumesIndependently() {
         val key = CopyKey()
         submit(key)
@@ -47,5 +66,3 @@ class InventoryTest {
         assertEquals(countA, countB)
     }
 }
-
-private class CopyKey
