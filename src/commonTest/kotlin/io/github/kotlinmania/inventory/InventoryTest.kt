@@ -24,7 +24,31 @@ private class UnusedPlugin(
 
 private class CopyKey
 
+public class Thing(
+    public val value: ULong,
+)
+
 class InventoryTest {
+    @Test
+    fun testIter() {
+        // Upstream tests/test.rs `test_iter` asserts size_of and align_of on the zero-sized phantom iter<Thing> ghost type.
+        // In Kotlin, iter<Thing>() produces an empty iterator for unregistered types and supports intoIter(), clone(), and Iterable loop.
+        val iterator = iter<Thing>()
+        assertFalse(iterator.hasNext())
+        val intoIterator = intoIter<Thing>()
+        assertFalse(intoIterator.hasNext())
+        val cloned = iterator.clone()
+        assertFalse(cloned.hasNext())
+        assertEquals(
+            0,
+            iterator
+                .intoIter()
+                .asSequence()
+                .toList()
+                .size,
+        )
+    }
+
     @Test
     fun submitAndIterateRoundTrip() {
         collect(Flag::class)

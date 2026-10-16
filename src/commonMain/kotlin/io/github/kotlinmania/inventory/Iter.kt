@@ -20,6 +20,9 @@ package io.github.kotlinmania.inventory
  * Refer to the package-level documentation for a complete example of
  * instantiating a plugin registry and submitting plugins.
  */
+// Private uninhabited type corresponding to upstream `void_iter::Void`.
+internal enum class Void
+
 public class Iter<T : Any>
     @PublishedApi
     internal constructor(
@@ -27,6 +30,8 @@ public class Iter<T : Any>
         @PublishedApi
         internal val extract: (Any) -> T,
     ) : Iterator<T> {
+        public operator fun iterator(): Iterator<T> = this
+
         override fun hasNext(): Boolean = node != null
 
         override fun next(): T {
@@ -40,10 +45,25 @@ public class Iter<T : Any>
         }
 
         /**
+         * Converts this collection into an iterator, corresponding to upstream `IntoIterator::into_iter`.
+         */
+        public fun intoIter(): Iter<T> = this
+
+        /**
+         * Duplicates this iterator at its current position, corresponding to upstream `Clone::clone`.
+         */
+        public fun clone(): Iter<T> = Iter(node, extract)
+
+        /**
+         * Returns this iterator, corresponding to upstream `Deref::deref`.
+         */
+        public fun deref(): Iter<T> = this
+
+        /**
          * Returns an iterator that resumes from the same position. The new iterator
          * visits the same remaining nodes as this one, independently.
          */
-        public fun copy(): Iter<T> = Iter(node, extract)
+        public fun copy(): Iter<T> = clone()
     }
 
 /**
@@ -63,3 +83,8 @@ public inline fun <reified T : Any> iter(): Iter<T> {
         }
     }
 }
+
+/**
+ * Creates an iterator over all registered plugins of type [T], corresponding to upstream `into_iter`.
+ */
+public inline fun <reified T : Any> intoIter(): Iter<T> = iter<T>()
